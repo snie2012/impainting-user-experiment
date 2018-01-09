@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My experiment</title>
+        <script src="jspsych-6.0/jspsych.js"></script>
+        <script src="jspsych-6.0/plugins/jspsych-html-keyboard-response.js"></script>
+        <script src="jspsych-6.0/plugins/jspsych-image-keyboard-response.js"></script>
+        <link href="jspsych-6.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+    </head>
+<body></body>
+  <script>
+
+    /* create timeline */
+    var timeline = [];
+
+    /* define welcome message trial */
+    var welcome = {
+      type: "html-keyboard-response",
+      stimulus: "Welcome to the experiment. Press any key to begin."
+    };
+    timeline.push(welcome);
+
+    /* define instructions trial */
+    var instructions = {
+      type: "html-keyboard-response",
+      stimulus: "<p>In this experiment, an image of a person will appear in the center " +
+          "of the screen.</p><p>If you think it is an image of a <strong>real</strong> person, " +
+          "press the letter Y on the keyboard as fast as you can.</p>" +
+          "<p>If you think it is an image of a <strong>fake</strong> person, press the letter N " +
+          "as fast as you can.</p>" +
+          "<p>Press any key to begin.</p>",
+      post_trial_gap: 500
+    };
+    timeline.push(instructions);
+
+    /* test trials */
+
+    var test_stimuli = [];
+    for (var i = 1; i < 15; i++) {
+      test_stimuli.push({
+        stimulus: "images/" + i.toString() + ".png", 
+        data: { label: 'test', response_real: 'y', response_fake: 'n'}
+      })
+    }
+
+    var blank = {
+      type: 'html-keyboard-response',
+      stimulus: '<div style="font-size:60px;"></div>',
+      choices: jsPsych.NO_KEYS,
+      trial_duration: function(){
+        // return jsPsych.randomization.sampleWithoutReplacement([250, 500, 750, 1000, 1250, 1500, 1750, 2000], 1)[0];
+        return 500;
+      },
+      data: {label: 'fixation'}
+    }
+
+    var test = {
+      type: "image-keyboard-response",
+      stimulus: jsPsych.timelineVariable('stimulus'),
+      choices: ['y', 'n'],
+      data: jsPsych.timelineVariable('data'),
+      on_finish: function(data) {
+        data.response_real = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.response_real);
+        data.response_fake = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.response_fake);
+      },
+    }
+
+    var test_procedure = {
+      timeline: [blank, test],
+      timeline_variables: test_stimuli,
+      repetitions: 1,
+      randomize_order: true
+    }
+    timeline.push(test_procedure);
+
+    /* define debrief */
+
+    var debrief_block = {
+      type: "html-keyboard-response",
+      stimulus: function() {
+
+        var trials = jsPsych.data.get().filter({label: 'test'});
+        var response_real_trials = trials.filter({response_real: true});
+        var accuracy = Math.round(response_real_trials.count() / trials.count() * 100);
+        var rt = Math.round(response_real_trials.select('rt').mean());
+
+        return "<p>The percentage of images recorded as real is "+accuracy+"% of the trials.</p>"+
+        "<p>Your average response time was "+rt+"ms.</p>"+
+        "<p>Press any key to complete the experiment. Thank you!</p>";
+
+      }
+    };
+    timeline.push(debrief_block);
+
+    /* start the experiment */
+    jsPsych.init({
+      timeline: timeline,
+      on_finish: function() {
+        jsPsych.data.get().localSave('json', 'data.json');
+      }
+    });
+  </script>
+</html>
