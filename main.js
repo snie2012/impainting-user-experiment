@@ -16,7 +16,7 @@ function shuffle (array) {
 
 var imagelist = fs.readFileSync('./data/imagelist.txt', 'utf8');
 imagelist = imagelist.split('\n');
-sample_size = 12;
+sample_size = 100;
 
 var app = express();
 app.use('/jspsych-6.0', express.static(__dirname + '/jspsych-6.0'));

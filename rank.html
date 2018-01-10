@@ -92,8 +92,8 @@
     jsPsych.init({
       timeline: timeline,
       on_finish: function() {
-        jsPsych.data.displayData();
-        // jsPsych.data.get().localSave('json', 'data.json');
+        // jsPsych.data.displayData();
+        jsPsych.data.get().localSave('json', 'data.json');
       }
     });
   </script>
