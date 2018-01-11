@@ -93,7 +93,7 @@ jsPsych.plugins['image-rank'] = (function() {
     // data to be recorded
     var ranks = [];
     for (var i = 0; i < trial.stimuli.length; i++) {
-      ranks.push(null);
+      ranks.push(-1);
     }
 
     // shuffle the images
@@ -171,7 +171,7 @@ jsPsych.plugins['image-rank'] = (function() {
 
       // check if the answer is valid
       const s = new Set(ranks);
-      if (s.has(null) || s.size < trial.stimuli.length) {
+      if (s.has(-1) || s.size < trial.stimuli.length) {
         display_element.firstElementChild.innerText = "The answer is invalid. Please check.";
         display_element.firstElementChild.style.color = 'red';
         return;
@@ -186,7 +186,7 @@ jsPsych.plugins['image-rank'] = (function() {
       // gather data
       var rank_result = [];
       for (var i = 0; i < trial.stimuli.length; i++) {
-        rank_result.push(null);
+        rank_result.push(0);
       }
       for (var i = 0; i < ranks.length; i++) {
         rank_result[ranks[i]] = trial.stimuli[i];
