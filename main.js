@@ -14,8 +14,9 @@ function shuffle (array) {
 	}
 }
 
-var imagelist = fs.readFileSync('./data/imagelist.txt', 'utf8');
+var imagelist = fs.readFileSync('./imagelist.txt', 'utf8');
 imagelist = imagelist.split('\n');
+console.log('image list size: ' + imagelist.length)
 sample_size = 100;
 
 var app = express();

@@ -50,7 +50,6 @@
     }
     timeline.push(blank);
 
-
     for (var i = 0; i < imagelist.length; i++) {
       var rank_stimuli = [];
       
@@ -69,28 +68,12 @@
       timeline.push(rank_trial);
     }
 
-    /* define debrief */
-
-    // var debrief_block = {
-    //   type: "html-keyboard-response",
-    //   stimulus: function() {
-
-    //     var trials = jsPsych.data.get().filter({label: 'test'});
-    //     var response_real_trials = trials.filter({response_real: true});
-    //     var accuracy = Math.round(response_real_trials.count() / trials.count() * 100);
-    //     var rt = Math.round(response_real_trials.select('rt').mean());
-
-    //     return "<p>The percentage of images recorded as real is "+accuracy+"% of the trials.</p>"+
-    //     "<p>Your average response time was "+rt+"ms.</p>"+
-    //     "<p>Press any key to complete the experiment. Thank you!</p>";
-
-    //   }
-    // };
-    // timeline.push(debrief_block);
+    
 
     /* start the experiment */
     jsPsych.init({
       timeline: timeline,
+      show_progress_bar: true,
       on_finish: function() {
         // jsPsych.data.displayData();
         jsPsych.data.get().localSave('json', 'data.json');
