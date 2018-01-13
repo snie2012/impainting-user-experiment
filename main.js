@@ -1,4 +1,5 @@
 var express = require('express');
+var bodyParser = require('body-parser')
 var path = require('path');
 var fs = require('fs');
 
@@ -20,6 +21,7 @@ console.log('image list size: ' + imagelist.length)
 sample_size = 100;
 
 var app = express();
+app.use(bodyParser.json());
 app.use('/jspsych-6.0', express.static(__dirname + '/jspsych-6.0'));
 app.use('/ours', express.static(__dirname + '/data/ours'));
 app.use('/ce', express.static(__dirname + '/data/ce'));
@@ -32,6 +34,13 @@ app.get('/imagelist', function(req, res) {
 
 app.get('/rank', function(req, res) {
     res.sendFile(path.join(__dirname + '/rank.html'));
+});
+
+app.post('/user_data', function(request, response){
+  	console.log('save user data');
+  	const username = JSON.parse(request.body[request.body.length-3]['responses'])['Q0'];
+  	console.log(username);
+  	fs.writeFile(username + ".json", JSON.stringify(request.body), (error) => {});
 });
 
 app.listen(8080, function() {

@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>My experiment</title>
+        <title>Image rank experiment</title>
         <script src="jspsych-6.0/jspsych.js"></script>
         <script src="jspsych-6.0/plugins/jspsych-html-keyboard-response.js"></script>
         <script src="jspsych-6.0/plugins/jspsych-image-keyboard-response.js"></script>
         <script src="jspsych-6.0/plugins/jspsych-image-rank.js"></script>
+        <script src="jspsych-6.0/plugins/jspsych-survey-text.js"></script>
         <link href="jspsych-6.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
     </head>
 <body></body>
@@ -31,8 +32,9 @@
       type: "html-keyboard-response",
       stimulus: "<p>In this experiment, three images of people will appear in the center " +
           "of the screen.</p><p>Your task is to rank these images based on how <strong>real</strong> you think they are." + 
-          "<p>The ranking level is between 1 to 3, with <strong>1</strong> representing the most real one and <strong>3</strong> the fakest one.</p>" +
-          "<p>The time to rank is not limited. When you finish ranking, click the <strong>Continue</strong> button to continue.</p>"
+          "<p>The ranking level is between 1 to 3, with <strong>1</strong> representing the most realistic one and <strong>3</strong> the least realistic one.</p>" +
+          "<p>There are totally 100 groups of images. The time to rank is not limited. </p> <p>When you finish one group, click the <strong>Continue</strong> button to continue to the next one.</p>" + 
+          "<p>At the end of the experiment, your name and age will be asked and recorded.</p>"
           ,
       post_trial_gap: 500
     };
@@ -44,9 +46,8 @@
       choices: jsPsych.NO_KEYS,
       trial_duration: function(){
         // return jsPsych.randomization.sampleWithoutReplacement([250, 500, 750, 1000, 1250, 1500, 1750, 2000], 1)[0];
-        return 500;
-      },
-      data: {label: 'fixation'}
+        return 100;
+      }
     }
     timeline.push(blank);
 
@@ -68,7 +69,23 @@
       timeline.push(rank_trial);
     }
 
-    
+    var survey_name = {
+      type: 'survey-text',
+      questions: [{prompt: "What's your full name?"}]
+    };
+    timeline.push(survey_name);
+
+    var survey_age = {
+      type: 'survey-text',
+      questions: [{prompt: "How old are you?"}]
+    };
+    timeline.push(survey_age);
+
+    var finish = {
+      type: 'html-keyboard-response',
+      stimulus: '<div style="font-size:15px;">You have reached the end of the experiment! Press any key to finish.</div>'
+    }
+    timeline.push(finish);
 
     /* start the experiment */
     jsPsych.init({
@@ -76,7 +93,11 @@
       show_progress_bar: true,
       on_finish: function() {
         // jsPsych.data.displayData();
-        jsPsych.data.get().localSave('json', 'data.json');
+        // jsPsych.data.get().localSave('json', 'data.json');
+        var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+        xmlhttp.open("POST", "/user_data");
+        xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xmlhttp.send(jsPsych.data.get().json());
       }
     });
   </script>
