@@ -94,7 +94,7 @@
       on_finish: function() {
         // jsPsych.data.displayData();
         // jsPsych.data.get().localSave('json', 'data.json');
-        var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+        var xmlhttp = new XMLHttpRequest();
         xmlhttp.open("POST", "/user_data");
         xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xmlhttp.send(jsPsych.data.get().json());
