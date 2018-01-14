@@ -28,19 +28,23 @@ app.use('/ce', express.static(__dirname + '/data/ce'));
 app.use('/gl', express.static(__dirname + '/data/gl'));
 
 app.get('/imagelist', function(req, res) {
+	console.log('Get image list')
 	shuffle(imagelist);
 	res.send(imagelist.slice(0, sample_size));
 })
 
 app.get('/rank', function(req, res) {
+	console.log('Get rank.html');
     res.sendFile(path.join(__dirname + '/rank.html'));
 });
 
 app.post('/user_data', function(request, response){
-  	console.log('save user data');
+  	console.log('Save user data');
   	const username = JSON.parse(request.body[request.body.length-3]['responses'])['Q0'];
   	console.log(username);
-  	fs.writeFile(username + ".json", JSON.stringify(request.body), (error) => {});
+  	fs.writeFile(username + ".json", JSON.stringify(request.body), (error) => {
+  		if (error == null) console.log('File saved');
+  	});
 });
 
 app.listen(8080, function() {
