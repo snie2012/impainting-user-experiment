@@ -83,6 +83,7 @@
   "spec": {
     "layer": [{
       "mark": "bar",
+      "height": 360,
       "encoding": {
         "x": {"field": "method_order","type": "nominal", "sort": "descending", "axis": false},
         "y": {"field": "percentage","type": "quantitative", "axis":{"format": ".00%","title": "Percentage"}},
