@@ -1,0 +1,1 @@
+F = 213.6, num df = 2.00, denom df = 55.86, p-value < 2.2e-16
