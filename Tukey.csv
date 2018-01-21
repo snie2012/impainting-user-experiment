@@ -1,0 +1,4 @@
+group1	group2	meandiff	 lower 	upper 	reject
+ce    	gl    	-0.0156 	-0.0974	0.0661	False 
+ce    	ours  	0.7203  	0.6386 	0.8021	True  
+gl    	ours  	0.7359  	0.6542 	0.8177	True  

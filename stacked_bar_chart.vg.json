@@ -1,0 +1,155 @@
+{
+  "layer": [
+    {
+      "height": 210,
+      "width": 90,
+      "encoding": {
+        "color": {
+          "field": "rank_order",
+          "type": "ordinal",
+          "legend": {
+            "title": "Ranking"
+          },
+          "scale": {
+            "domain": [
+              "1st",
+              "2nd",
+              "3rd"
+            ],
+            "range": [
+              "#9467bd",
+              "#aec7e8",
+              "#c7c7c7"
+            ]
+          }
+        },
+        "x": {
+          "axis": {
+            "title": "Methods",
+            "labelAngle": -45
+          },
+          "field": "method",
+          "sort": "descending",
+          "type": "nominal"
+        },
+        "y": {
+          "field": "percentage",
+          "type": "quantitative",
+          "axis": {
+            "format": ".00%",
+            "title": "Percentage"
+          }
+        }
+      },
+      "mark": "bar"
+    },
+    {
+      "mark": {
+        "type": "text",
+        "baseline": "middle",
+        "dy": -8
+      },
+      "encoding": {
+        "x": {
+          "field": "method",
+          "type": "nominal",
+          "axis": false
+        },
+        "y": {
+          "field": "percentage",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "formatted_percentage",
+          "type": "nominal"
+        }
+      }
+    }
+  ],
+  "data": {
+    "values": [
+      {
+        "count": 2620,
+        "method": "OURS",
+        "rank": "1st",
+        "percentage": 0.81875,
+        "formatted_percentage": "81.9%",
+        "method_order": 0,
+        "rank_order": 2
+      },
+      {
+        "count": 265,
+        "method": "GL",
+        "rank": "1st",
+        "percentage": 0.0828125,
+        "formatted_percentage": "8.3%",
+        "method_order": 2,
+        "rank_order": 2
+      },
+      {
+        "count": 315,
+        "method": "CE",
+        "rank": "1st",
+        "percentage": 0.0984375,
+        "formatted_percentage": "9.8%",
+        "method_order": 1,
+        "rank_order": 2
+      },
+      {
+        "count": 1628,
+        "method": "CE",
+        "rank": "2nd",
+        "percentage": 0.50875,
+        "formatted_percentage": "50.9%",
+        "method_order": 1,
+        "rank_order": 1
+      },
+      {
+        "count": 1170,
+        "method": "GL",
+        "rank": "2nd",
+        "percentage": 0.365625,
+        "formatted_percentage": "36.6%",
+        "method_order": 2,
+        "rank_order": 1
+      },
+      {
+        "count": 402,
+        "method": "OURS",
+        "rank": "2nd",
+        "percentage": 0.125625,
+        "formatted_percentage": "12.6%",
+        "method_order": 0,
+        "rank_order": 1
+      },
+      {
+        "count": 1765,
+        "method": "GL",
+        "rank": "3rd",
+        "percentage": 0.5515625,
+        "formatted_percentage": "55.2%",
+        "method_order": 2,
+        "rank_order": 0
+      },
+      {
+        "count": 1257,
+        "method": "CE",
+        "rank": "3rd",
+        "percentage": 0.3928125,
+        "formatted_percentage": "39.3%",
+        "method_order": 1,
+        "rank_order": 0
+      },
+      {
+        "count": 178,
+        "method": "OURS",
+        "rank": "3rd",
+        "percentage": 0.055625,
+        "formatted_percentage": "5.6%",
+        "method_order": 0,
+        "rank_order": 0
+      }
+    ]
+  },
+  "$schema": "https://vega.github.io/schema/vega-lite/v1.2.1.json"
+}
