@@ -4,7 +4,7 @@
         <title>Image rank experiment</title>
         <script src="jspsych-6.0/jspsych.js"></script>
         <script src="jspsych-6.0/plugins/jspsych-html-keyboard-response.js"></script>
-        <script src="jspsych-6.0/plugins/jspsych-image-keyboard-response.js"></script>
+        <script src="jspsych-6.0/plugins/jspsych-image-keyboard-compare.js"></script>
         <script src="jspsych-6.0/plugins/jspsych-image-rank.js"></script>
         <script src="jspsych-6.0/plugins/jspsych-survey-text.js"></script>
         <link href="jspsych-6.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
@@ -23,60 +23,46 @@
     /* define welcome message trial */
     var welcome = {
       type: "html-keyboard-response",
-      stimulus: "Welcome to the experiment. Press any key to begin."
+      choices: [' '],
+      stimulus: "Welcome to the experiment. Press space to begin."
     };
     timeline.push(welcome);
 
     /* define instructions trial */
     var instructions = {
       type: "html-keyboard-response",
+      choices: [' '],
       stimulus: "<p>In this experiment, three images of people will appear in the center " +
           "of the screen.</p><p>Your task is to rank these images based on how <strong>real</strong> you think they are." + 
           "<p>The ranking level is between 1 to 3, with <strong>1</strong> representing the most realistic one and <strong>3</strong> the least realistic one.</p>" +
           "<p>There are totally 100 groups of images. The time to rank is not limited. </p> <p>When you finish one group, click the <strong>Continue</strong> button to continue to the next one.</p>" + 
           "<p>At the end of the experiment, your name and age will be asked and recorded.</p>"
-          ,
-      post_trial_gap: 500
     };
     timeline.push(instructions);
 
-    var blank = {
-      type: 'html-keyboard-response',
-      stimulus: '<div style="font-size:60px;"></div>',
-      choices: jsPsych.NO_KEYS,
-      trial_duration: function(){
-        // return jsPsych.randomization.sampleWithoutReplacement([250, 500, 750, 1000, 1250, 1500, 1750, 2000], 1)[0];
-        return 100;
-      }
-    }
+    // var blank = {
+    //   type: 'html-keyboard-response',
+    //   stimulus: '<div style="font-size:60px;"></div>',
+    //   choices: jsPsych.NO_KEYS,
+    //   trial_duration: function(){
+    //     // return jsPsych.randomization.sampleWithoutReplacement([250, 500, 750, 1000, 1250, 1500, 1750, 2000], 1)[0];
+    //     return 100;
+    //   }
+    // }
     // timeline.push(blank);
 
-    timeline.push({
-        type: 'image-keyboard-response',
-        stimulus_1: 'img/happy_face_1.png',
-        stimulus_2: 'img/happy_face_2.png',
-        choices: ['1', '2'],
-        prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
-       response_ends_trial: true
-    });
-
     // for (var i = 0; i < imagelist.length; i++) {
-    for (var i = 0; i < 1; i++) {
-      var rank_stimuli = [];
-      
-      rank_stimuli.push("ours/" + imagelist[i] + "_ours.png");
-      rank_stimuli.push("ce/" + imagelist[i] + "_ce.png");
-      rank_stimuli.push("gl/" + imagelist[i] + "_gl.png");
+    for (var i = 0; i < 10; i++) {
+        var compare_trial = {
+          type: 'image-keyboard-compare',
+          stimulus_1: 'images/obama.png',
+          stimulus_2: 'images/penguin.png',
+          choices: ['1', '2'],
+          prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
+         response_ends_trial: true
+        }
 
-      var rank_trial = {
-          type: 'image-rank',
-          sort_area_height: 128,
-          choices: ['1', '2', '3'],
-          stimuli: rank_stimuli,
-          prompt: "<p>Rank the following images</p>"
-      };
-
-      timeline.push(rank_trial);
+      timeline.push(compare_trial);
     }
 
     var survey_name = {
