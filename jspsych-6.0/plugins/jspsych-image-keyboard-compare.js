@@ -21,15 +21,27 @@ jsPsych.plugins["image-keyboard-compare"] = (function() {
     parameters: {
       stimulus_1: {
         type: jsPsych.plugins.parameterType.IMAGE,
-        pretty_name: 'stimulus',
+        pretty_name: 'stimulus-1',
         default: undefined,
         description: 'The first image to be displayed'
       },
       stimulus_2: {
         type: jsPsych.plugins.parameterType.IMAGE,
-        pretty_name: 'stimulus',
+        pretty_name: 'stimulus-1',
         default: undefined,
         description: 'The second image to be displayed'
+      },
+      placeholder_1: {
+        type: jsPsych.plugins.parameterType.IMAGE,
+        pretty_name: 'placeholder-1',
+        default: undefined,
+        description: 'The first placeholder image'
+      },
+      placeholder_2: {
+        type: jsPsych.plugins.parameterType.IMAGE,
+        pretty_name: 'placeholder_2',
+        default: undefined,
+        description: 'The second placeholder image'
       },
       choices: {
         type: jsPsych.plugins.parameterType.KEYCODE,
@@ -116,15 +128,22 @@ jsPsych.plugins["image-keyboard-compare"] = (function() {
 
       // keycode 49: keyboard '1'
       // keycode 50: keyboard '2'
-      // info.key == 49 ? display_element.querySelector('#jspsych-image-keyboard-compare-stimulus-1').className += ' responded' : display_element.querySelector('#jspsych-image-keyboard-compare-stimulus-2').className += ' responded';
+      // keycode 32: keyboard ' '
 
-      // only record the first response
-      if (response.key == null) {
+      if (info.key == 49) {
+        display_element.querySelector('#jspsych-image-keyboard-compare-stimulus-1').style.backgroundColor = 'lightgray';
+        display_element.querySelector('#jspsych-image-keyboard-compare-stimulus-2').style.backgroundColor = 'white';
+      } else if (info.key == 50) {
+        display_element.querySelector('#jspsych-image-keyboard-compare-stimulus-1').style.backgroundColor = 'white';
+        display_element.querySelector('#jspsych-image-keyboard-compare-stimulus-2').style.backgroundColor = 'lightgray';
+      }
+
+      if (info.key == 49 || info.key == 50) {
         response = info;
       }
 
-      if (trial.response_ends_trial) {
-        // setTimeout(end_trial, 1000);
+      if (response.key && info.key == 32) {
+        console.log(response);
         end_trial();
       }
     };
@@ -135,7 +154,7 @@ jsPsych.plugins["image-keyboard-compare"] = (function() {
         callback_function: after_response,
         valid_responses: trial.choices,
         rt_method: 'date',
-        persist: false,
+        persist: true,
         allow_held_key: false
       });
     }
@@ -143,7 +162,10 @@ jsPsych.plugins["image-keyboard-compare"] = (function() {
     // hide stimulus if stimulus_duration is set
     if (trial.stimulus_duration !== null) {
       jsPsych.pluginAPI.setTimeout(function() {
-        display_element.querySelector('#jspsych-image-keyboard-compare-stimulus').style.visibility = 'hidden';
+        // display_element.querySelector('#jspsych-image-keyboard-compare-stimulus-1').style.visibility = 'hidden';
+        // display_element.querySelector('#jspsych-image-keyboard-compare-stimulus-2').style.visibility = 'hidden';
+        display_element.querySelector('#jspsych-image-keyboard-compare-stimulus-1').src = trial.placeholder_1;
+        display_element.querySelector('#jspsych-image-keyboard-compare-stimulus-2').src = trial.placeholder_2;
       }, trial.stimulus_duration);
     }
 

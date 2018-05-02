@@ -40,26 +40,100 @@
     };
     timeline.push(instructions);
 
-    // var blank = {
-    //   type: 'html-keyboard-response',
-    //   stimulus: '<div style="font-size:60px;"></div>',
-    //   choices: jsPsych.NO_KEYS,
-    //   trial_duration: function(){
-    //     // return jsPsych.randomization.sampleWithoutReplacement([250, 500, 750, 1000, 1250, 1500, 1750, 2000], 1)[0];
-    //     return 100;
-    //   }
-    // }
-    // timeline.push(blank);
+    // session 1
+    var sess1_text = {
+      type: "html-keyboard-response",
+      choices: [' '],
+      stimulus: "<p>This is session 1. Time unlimited. Press 'space' to continue.</p>"
+    };
+    timeline.push(sess1_text);
 
     // for (var i = 0; i < imagelist.length; i++) {
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 3; i++) {
         var compare_trial = {
           type: 'image-keyboard-compare',
           stimulus_1: 'images/obama.png',
           stimulus_2: 'images/penguin.png',
-          choices: ['1', '2'],
+          placeholder_1: 'images/placeholder_1.png',
+          placeholder_2: 'images/placeholder_2.png',
+          choices: ['1', '2', ' '],
           prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
-         response_ends_trial: true
+         response_ends_trial: false
+        }
+
+      timeline.push(compare_trial);
+    }
+
+    // session 2
+    var sess2_text = {
+      type: "html-keyboard-response",
+      choices: [' '],
+      stimulus: "<p>This is session 2. Time limited to 250 ms. Press 'space' to continue.</p>"
+    };
+    timeline.push(sess2_text);
+
+    // for (var i = 0; i < imagelist.length; i++) {
+    for (var i = 0; i < 3; i++) {
+        var compare_trial = {
+          type: 'image-keyboard-compare',
+          stimulus_1: 'images/obama.png',
+          stimulus_2: 'images/penguin.png',
+          placeholder_1: 'images/placeholder_1.png',
+          placeholder_2: 'images/placeholder_2.png',
+          choices: ['1', '2', ' '],
+          prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
+         response_ends_trial: false,
+         stimulus_duration: 250
+        }
+
+      timeline.push(compare_trial);
+    }
+
+    // session 2
+    var sess3_text = {
+      type: "html-keyboard-response",
+      choices: [' '],
+      stimulus: "<p>This is session 3. Time limited to 1000 ms. Press 'space' to continue.</p>"
+    };
+    timeline.push(sess3_text);
+
+    // for (var i = 0; i < imagelist.length; i++) {
+    for (var i = 0; i < 3; i++) {
+        var compare_trial = {
+          type: 'image-keyboard-compare',
+          stimulus_1: 'images/obama.png',
+          stimulus_2: 'images/penguin.png',
+          placeholder_1: 'images/placeholder_1.png',
+          placeholder_2: 'images/placeholder_2.png',
+          choices: ['1', '2', ' '],
+          prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
+         response_ends_trial: false,
+         stimulus_duration: 1000
+        }
+
+      timeline.push(compare_trial);
+    }
+
+    // session 4
+    var sess4_text = {
+      type: "html-keyboard-response",
+      choices: [' '],
+      stimulus: "<p>This is session 4. Time limited to 4000 ms. Press 'space' to continue.</p>"
+    };
+    timeline.push(sess4_text);
+
+    // for (var i = 0; i < imagelist.length; i++) {
+    for (var i = 0; i < 3; i++) {
+        var compare_trial = {
+          type: 'image-keyboard-compare',
+          stimulus_1: 'images/obama.png',
+          stimulus_2: 'images/penguin.png',
+          placeholder_1: 'images/placeholder_1.png',
+          placeholder_2: 'images/placeholder_2.png',
+          choices: ['1', '2', ' '],
+          prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
+         response_ends_trial: false,
+         stimulus_duration: 4000
         }
 
       timeline.push(compare_trial);
