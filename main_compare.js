@@ -18,7 +18,7 @@ function shuffle (array) {
 var imagelist = fs.readFileSync('./imagelist.txt', 'utf8');
 imagelist = imagelist.split('\n');
 console.log('image list size: ' + imagelist.length);
-sample_size = 3;
+sample_size = 100;
 
 var app = express();
 app.use(bodyParser.json());
@@ -59,6 +59,10 @@ app.post('/user_name', function(request, response) {
 
 app.post('/user_age', function(request, response) {
 	saveFile(dir, 'age.json', JSON.stringify(request.body));
+});
+
+app.post('/user_gender', function(request, response) {
+	saveFile(dir, 'gender.json', JSON.stringify(request.body));
 });
 
 app.post('/session_1', function(request, response){

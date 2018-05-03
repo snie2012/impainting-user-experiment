@@ -53,7 +53,6 @@
       stimulus: "Welcome to the experiment. Press space to begin."
     });
 
-    /* define instructions trial */
     timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
@@ -73,8 +72,15 @@
       type: 'survey-text',
       questions: [{prompt: "What is your age?"}],
       on_finish: data => {
-        user_age = JSON.parse(data.responses)['Q0'];
         postData('/user_age', JSON.stringify(data));
+      }
+    });
+
+    timeline.push({
+      type: 'survey-text',
+      questions: [{prompt: "What is your gender ('F' for female and 'M' for male)?"}],
+      on_finish: data => {
+        postData('/user_gender', JSON.stringify(data));
       }
     });
 
@@ -85,18 +91,18 @@
       stimulus: "<p>This is session 1. Time unlimited. Press 'space' to continue.</p>"
     });
 
-    for (var i = 0; i < imagelist1.length; i++) {
-        timeline.push({
-          type: 'image-keyboard-compare',
-          stimulus_1: 'images/ours_v1_19/' + imagelist1[i] + '_fake.png',
-          stimulus_2: 'images/ctx_v1/' + imagelist1[i] + '_ctx.png',
-          placeholder_1: 'images/placeholder_1.png',
-          placeholder_2: 'images/placeholder_2.png',
-          choices: ['1', '2', ' '],
-          prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
-         response_ends_trial: false
-        });
-    }
+    // for (var i = 0; i < imagelist1.length; i++) {
+    //     timeline.push({
+    //       type: 'image-keyboard-compare',
+    //       stimulus_1: 'images/ours_v1_19/' + imagelist1[i] + '_fake.png',
+    //       stimulus_2: 'images/ctx_v1/' + imagelist1[i] + '_ctx.png',
+    //       placeholder_1: 'images/placeholder_1.png',
+    //       placeholder_2: 'images/placeholder_2.png',
+    //       choices: ['1', '2', ' '],
+    //       prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
+    //      response_ends_trial: false
+    //     });
+    // }
 
     // prepare data for the following sessions
     let order_shuffle = [];
