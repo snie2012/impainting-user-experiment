@@ -39,8 +39,7 @@ app.get('/compare', function(req, res) {
     res.sendFile(path.join(__dirname + '/compare.html'));
 });
 
-
-let user_name, use_rage, dir;
+let user_name, dir;
 
 function saveFile(directory, filename, data) {
 	fs.writeFile(directory + filename, data, (error) => {
@@ -53,6 +52,10 @@ app.post('/user_name', function(request, response) {
   	console.log('Create directory for ' + user_name);
   	dir = './user_data_compare/' + user_name + '/';
 	if (!fs.existsSync(dir)) fs.mkdirSync(dir);
+});
+
+app.post('/user_age', function(request, response) {
+	saveFile(dir, 'age.json', JSON.stringify(request.body));
 });
 
 app.post('/session_1', function(request, response){

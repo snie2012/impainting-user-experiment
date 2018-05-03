@@ -57,6 +57,7 @@
       questions: [{prompt: "What is your age?"}],
       on_finish: data => {
         user_age = JSON.parse(data.responses)['Q0'];
+        postData('/user_age', JSON.stringify(data));
       }
     });
 
