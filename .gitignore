@@ -1,5 +1,6 @@
 data/
 node_modules/
 images/
+user_data_compare/
 .DS_STORE
 package-lock.json

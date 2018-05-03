@@ -17,19 +17,22 @@ function shuffle (array) {
 
 var imagelist = fs.readFileSync('./imagelist.txt', 'utf8');
 imagelist = imagelist.split('\n');
-console.log('image list size: ' + imagelist.length)
+console.log('image list size: ' + imagelist.length);
 sample_size = 3;
 
 var app = express();
 app.use(bodyParser.json());
 app.use('/jspsych-6.0', express.static(__dirname + '/jspsych-6.0'));
-app.use('/ours', express.static(__dirname + '/data/ours'));
-app.use('/ce', express.static(__dirname + '/data/ce'));
-
 app.use('/images', express.static(__dirname + '/images'));
 
-app.get('/imagelist', function(req, res) {
-	console.log('Get image list')
+app.get('/imagelist1', function(req, res) {
+	console.log('Get image list 1');
+	shuffle(imagelist);
+	res.send(imagelist.slice(0, sample_size));
+})
+
+app.get('/imagelist2', function(req, res) {
+	console.log('Get image list 2');
 	shuffle(imagelist);
 	res.send(imagelist.slice(0, sample_size));
 })

@@ -93,7 +93,7 @@ jsPsych.plugins["image-keyboard-compare"] = (function() {
     display_element.innerHTML = image_html;
 
     // position elements
-    var image_dist = 20, image_res = 256;
+    var image_dist = 50, image_res = 256;
     var margin = (window.innerWidth - image_res * 2 - image_dist) / 2,
         top = window.innerHeight / 4; 
     var elm1 = display_element.querySelector('#jspsych-image-keyboard-compare-stimulus-1'),

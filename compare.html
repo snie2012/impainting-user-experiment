@@ -11,6 +11,18 @@
     </head>
 <body></body>
   <script>
+    // helper functions
+    // reference: https://www.frankmitchell.org/2015/01/fisher-yates/
+    function shuffle (array) {
+      var i = 0, j = 0, t = null;
+      for (i = array.length - 1; i > 0; i -= 1) {
+        j = Math.floor(Math.random() * (i + 1));
+        t = array[i];
+        array[i] = array[j];
+        array[j] = t;
+      }
+    }
+
     var postData = function(endpoint, data) {
       var xmlhttp = new XMLHttpRequest();
       xmlhttp.open("POST", endpoint);
@@ -20,11 +32,16 @@
 
     let user_name;
 
-    // get image list
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", '/imagelist', false);
-    xhr.send();
-    const imagelist = JSON.parse(xhr.responseText);
+    // get image lists
+    var xhr1 = new XMLHttpRequest();
+    xhr1.open("GET", '/imagelist1', false);
+    xhr1.send();
+    const imagelist1 = JSON.parse(xhr1.responseText);
+
+    var xhr2 = new XMLHttpRequest();
+    xhr2.open("GET", '/imagelist2', false);
+    xhr2.send();
+    const imagelist2 = JSON.parse(xhr2.responseText);
 
     /* create timeline */
     var timeline = [];
@@ -68,11 +85,11 @@
       stimulus: "<p>This is session 1. Time unlimited. Press 'space' to continue.</p>"
     });
 
-    for (var i = 0; i < imagelist.length; i++) {
+    for (var i = 0; i < imagelist1.length; i++) {
         timeline.push({
           type: 'image-keyboard-compare',
-          stimulus_1: 'images/ours_v1_19/' + imagelist[i] + '_fake.png',
-          stimulus_2: 'images/ctx_v1/' + imagelist[i] + '_ctx.png',
+          stimulus_1: 'images/ours_v1_19/' + imagelist1[i] + '_fake.png',
+          stimulus_2: 'images/ctx_v1/' + imagelist1[i] + '_ctx.png',
           placeholder_1: 'images/placeholder_1.png',
           placeholder_2: 'images/placeholder_2.png',
           choices: ['1', '2', ' '],
@@ -81,21 +98,29 @@
         });
     }
 
+    // prepare data for the following sessions
+    let order_shuffle = [];
+    for (let i = 0; i < imagelist2.length; i++) {
+      order_shuffle.push(imagelist2[i] + '_fake.png');
+      order_shuffle.push(imagelist2[i] + '_ctx.png');
+    }
+
     // session 2
     timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "<p>This is the fist part of session 2. Time limited to 250 ms. Press 'space' to continue.</p>",
+      stimulus: "<p>This is session 2. Time limited to 250 ms. Press 'space' to continue.</p>",
       on_load: () => {
-        postData('/session_1', jsPsych.data.get().last(imagelist.length).json());
+        postData('/session_1', jsPsych.data.get().last(imagelist1.length).json());
       }
     });
 
-    for (var i = 0; i < imagelist.length; i++) {
+    shuffle(order_shuffle);
+    for (var i = 0; i < order_shuffle.length; i++) {
         timeline.push({
           type: 'image-keyboard-compare',
-          stimulus_1: 'images/ours_v1_19/' + imagelist[i] + '_fake.png',
-          stimulus_2: 'images/groundtruth/' + imagelist[i] + '.png',
+          stimulus_1: 'images/' + (order_shuffle[i].indexOf('_fake') > -1 ? 'ours_v1_19/' : 'ctx_v1/') + order_shuffle[i],
+          stimulus_2: 'images/groundtruth/' + order_shuffle[i].split('_')[0] + '.png',
           placeholder_1: 'images/placeholder_1.png',
           placeholder_2: 'images/placeholder_2.png',
           choices: ['1', '2', ' '],
@@ -105,61 +130,23 @@
         });
     }
 
-    timeline.push({
-      type: "html-keyboard-response",
-      choices: [' '],
-      stimulus: "<p>This is the second part of session 2. Time limited to 250 ms. Press 'space' to continue.</p>"
-    });
-
-    for (var i = 0; i < imagelist.length; i++) {
-        timeline.push({
-          type: 'image-keyboard-compare',
-          stimulus_1: 'images/ctx_v1/' + imagelist[i] + '_ctx.png',
-          stimulus_2: 'images/groundtruth/' + imagelist[i] + '.png',
-          placeholder_1: 'images/placeholder_1.png',
-          placeholder_2: 'images/placeholder_2.png',
-          choices: ['1', '2', ' '],
-          prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
-         response_ends_trial: false,
-         stimulus_duration: 250
-        });
-    }
 
     // session 3
     timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "<p>This is the first part of session 3. Time limited to 1000 ms. Press 'space' to continue.</p>",
+      stimulus: "<p>This is the session 3. Time limited to 1000 ms. Press 'space' to continue.</p>",
       on_load: () => {
-        postData('/session_2', jsPsych.data.get().last(imagelist.length * 2 + 1).json());
+        postData('/session_2', jsPsych.data.get().last(order_shuffle.length).json());
       }
     });
 
-    for (var i = 0; i < imagelist.length; i++) {
+    shuffle(order_shuffle);
+    for (var i = 0; i < order_shuffle.length; i++) {
         timeline.push({
           type: 'image-keyboard-compare',
-          stimulus_1: 'images/ours_v1_19/' + imagelist[i] + '_fake.png',
-          stimulus_2: 'images/groundtruth/' + imagelist[i] + '.png',
-          placeholder_1: 'images/placeholder_1.png',
-          placeholder_2: 'images/placeholder_2.png',
-          choices: ['1', '2', ' '],
-          prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
-         response_ends_trial: false,
-         stimulus_duration: 1000
-        });
-    }
-
-    timeline.push({
-      type: "html-keyboard-response",
-      choices: [' '],
-      stimulus: "<p>This is the second part of session 3. Time limited to 1000 ms. Press 'space' to continue.</p>"
-    });
-
-    for (var i = 0; i < imagelist.length; i++) {
-        timeline.push({
-          type: 'image-keyboard-compare',
-          stimulus_1: 'images/ctx_v1/' + imagelist[i] + '_ctx.png',
-          stimulus_2: 'images/groundtruth/' + imagelist[i] + '.png',
+          stimulus_1: 'images/' + (order_shuffle[i].indexOf('_fake') > -1 ? 'ours_v1_19/' : 'ctx_v1/') + order_shuffle[i],
+          stimulus_2: 'images/groundtruth/' + order_shuffle[i].split('_')[0] + '.png',
           placeholder_1: 'images/placeholder_1.png',
           placeholder_2: 'images/placeholder_2.png',
           choices: ['1', '2', ' '],
@@ -173,37 +160,18 @@
     timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "<p>This is the first part of session 4. Time limited to 4000 ms. Press 'space' to continue.</p>",
+      stimulus: "<p>This is session 4. Time limited to 4000 ms. Press 'space' to continue.</p>",
       on_load: () => {
-        postData('/session_3', jsPsych.data.get().last(imagelist.length * 2 + 1).json());
+        postData('/session_3', jsPsych.data.get().last(order_shuffle.length).json(order_shuffle));
       }
     });
 
-    for (var i = 0; i < imagelist.length; i++) {
+    shuffle(order_shuffle);
+    for (var i = 0; i < order_shuffle.length; i++) {
         timeline.push({
           type: 'image-keyboard-compare',
-          stimulus_1: 'images/ours_v1_19/' + imagelist[i] + '_fake.png',
-          stimulus_2: 'images/groundtruth/' + imagelist[i] + '.png',
-          placeholder_1: 'images/placeholder_1.png',
-          placeholder_2: 'images/placeholder_2.png',
-          choices: ['1', '2', ' '],
-          prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
-         response_ends_trial: false,
-         stimulus_duration: 4000
-        });
-    }
-
-    timeline.push({
-      type: "html-keyboard-response",
-      choices: [' '],
-      stimulus: "<p>This is the second part of session 4. Time limited to 4000 ms. Press 'space' to continue.</p>"
-    });
-
-    for (var i = 0; i < imagelist.length; i++) {
-        timeline.push({
-          type: 'image-keyboard-compare',
-          stimulus_1: 'images/ctx_v1/' + imagelist[i] + '_ctx.png',
-          stimulus_2: 'images/groundtruth/' + imagelist[i] + '.png',
+          stimulus_1: 'images/' + (order_shuffle[i].indexOf('_fake') > -1 ? 'ours_v1_19/' : 'ctx_v1/') + order_shuffle[i],
+          stimulus_2: 'images/groundtruth/' + order_shuffle[i].split('_')[0] + '.png',
           placeholder_1: 'images/placeholder_1.png',
           placeholder_2: 'images/placeholder_2.png',
           choices: ['1', '2', ' '],
@@ -217,13 +185,19 @@
       type: 'html-keyboard-response',
       stimulus: '<div style="font-size:15px;">You have reached the end of the experiment! Please press "space" before exiting.</div>',
       on_load: () => {
-        postData('/session_4', jsPsych.data.get().last(imagelist.length * 2 + 1).json());
+        postData('/session_4', jsPsych.data.get().last(order_shuffle.length).json());
       }
     });
 
     /* start the experiment */
     let preloadImages = [];
-    for (var im of imagelist) {
+    for (var im of imagelist1) {
+      preloadImages.push('images/groundtruth/' + im + '.png');
+      preloadImages.push('images/ctx_v1/' + im + '_ctx.png');
+      preloadImages.push('images/ours_v1_19/' + im + '_fake.png');
+    }
+
+    for (var im of imagelist2) {
       preloadImages.push('images/groundtruth/' + im + '.png');
       preloadImages.push('images/ctx_v1/' + im + '_ctx.png');
       preloadImages.push('images/ours_v1_19/' + im + '_fake.png');
