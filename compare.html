@@ -11,9 +11,18 @@
     </head>
 <body></body>
   <script>
+    var postData = function(endpoint, data) {
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.open("POST", endpoint);
+      xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      xmlhttp.send(data);
+    }
+
+    let user_name;
+
     // get image list
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", '/imagelist', false); // false for synchronous request
+    xhr.open("GET", '/imagelist', false);
     xhr.send();
     const imagelist = JSON.parse(xhr.responseText);
 
@@ -32,6 +41,23 @@
       type: "html-keyboard-response",
       choices: [' '],
       stimulus: "<p>Compare image pairs. Pick the most realistic one.</p>"
+    });
+
+    timeline.push({
+      type: 'survey-text',
+      questions: [{prompt: "What's your full name?"}],
+      on_finish: data => {
+        user_name = JSON.parse(data.responses)['Q0'];
+        postData('/user_name', JSON.stringify(data));
+      }
+    });
+
+    timeline.push({
+      type: 'survey-text',
+      questions: [{prompt: "What is your age?"}],
+      on_finish: data => {
+        user_age = JSON.parse(data.responses)['Q0'];
+      }
     });
 
     // session 1
@@ -58,7 +84,10 @@
     timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "<p>This is the fist part of session 2. Time limited to 250 ms. Press 'space' to continue.</p>"
+      stimulus: "<p>This is the fist part of session 2. Time limited to 250 ms. Press 'space' to continue.</p>",
+      on_load: () => {
+        postData('/session_1', jsPsych.data.get().last(imagelist.length).json());
+      }
     });
 
     for (var i = 0; i < imagelist.length; i++) {
@@ -70,8 +99,8 @@
           placeholder_2: 'images/placeholder_2.png',
           choices: ['1', '2', ' '],
           prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
-         response_ends_trial: false,
-         stimulus_duration: 250
+          response_ends_trial: false,
+          stimulus_duration: 250
         });
     }
 
@@ -95,11 +124,14 @@
         });
     }
 
-    // session 2
+    // session 3
     timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "<p>This is the first part of session 3. Time limited to 1000 ms. Press 'space' to continue.</p>"
+      stimulus: "<p>This is the first part of session 3. Time limited to 1000 ms. Press 'space' to continue.</p>",
+      on_load: () => {
+        postData('/session_2', jsPsych.data.get().last(imagelist.length * 2 + 1).json());
+      }
     });
 
     for (var i = 0; i < imagelist.length; i++) {
@@ -140,7 +172,10 @@
     timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "<p>This is the first part of session 4. Time limited to 4000 ms. Press 'space' to continue.</p>"
+      stimulus: "<p>This is the first part of session 4. Time limited to 4000 ms. Press 'space' to continue.</p>",
+      on_load: () => {
+        postData('/session_3', jsPsych.data.get().last(imagelist.length * 2 + 1).json());
+      }
     });
 
     for (var i = 0; i < imagelist.length; i++) {
@@ -178,32 +213,26 @@
     }
 
     timeline.push({
-      type: 'survey-text',
-      questions: [{prompt: "What's your full name?"}]
-    });
-
-    timeline.push({
-      type: 'survey-text',
-      questions: [{prompt: "What is your age?"}]
-    });
-
-    timeline.push({
       type: 'html-keyboard-response',
-      stimulus: '<div style="font-size:15px;">You have reached the end of the experiment! Please press "space" before exiting.</div>'
+      stimulus: '<div style="font-size:15px;">You have reached the end of the experiment! Please press "space" before exiting.</div>',
+      on_load: () => {
+        postData('/session_4', jsPsych.data.get().last(imagelist.length * 2 + 1).json());
+      }
     });
 
     /* start the experiment */
+    let preloadImages = [];
+    for (var im of imagelist) {
+      preloadImages.push('images/groundtruth/' + im + '.png');
+      preloadImages.push('images/ctx_v1/' + im + '_ctx.png');
+      preloadImages.push('images/ours_v1_19/' + im + '_fake.png');
+    }
+
     jsPsych.init({
       timeline: timeline,
       show_progress_bar: true,
-      on_finish: function() {
-        // jsPsych.data.displayData();
-        // jsPsych.data.get().localSave('json', 'data.json');
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("POST", "/user_data");
-        xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xmlhttp.send(jsPsych.data.get().json());
-      }
+      preload_images: preloadImages,
+      show_preload_progress_bar: true
     });
   </script>
 </html>

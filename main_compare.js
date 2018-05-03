@@ -18,7 +18,7 @@ function shuffle (array) {
 var imagelist = fs.readFileSync('./imagelist.txt', 'utf8');
 imagelist = imagelist.split('\n');
 console.log('image list size: ' + imagelist.length)
-sample_size = 100;
+sample_size = 3;
 
 var app = express();
 app.use(bodyParser.json());
@@ -39,13 +39,40 @@ app.get('/compare', function(req, res) {
     res.sendFile(path.join(__dirname + '/compare.html'));
 });
 
-app.post('/user_data', function(request, response){
-  	console.log('Save user data');
-  	const username = JSON.parse(request.body[request.body.length-3]['responses'])['Q0'];
-  	console.log(username);
-  	fs.writeFile(username + ".json", JSON.stringify(request.body), (error) => {
+
+let user_name, use_rage, dir;
+
+function saveFile(directory, filename, data) {
+	fs.writeFile(directory + filename, data, (error) => {
   		if (error == null) console.log('File saved');
   	});
+}
+
+app.post('/user_name', function(request, response) {
+	user_name = JSON.parse(request.body['responses'])['Q0'];
+  	console.log('Create directory for ' + user_name);
+  	dir = './user_data_compare/' + user_name + '/';
+	if (!fs.existsSync(dir)) fs.mkdirSync(dir);
+});
+
+app.post('/session_1', function(request, response){
+  	console.log('Save user data for session 1');
+  	saveFile(dir, 'session_1.json', JSON.stringify(request.body));
+});
+
+app.post('/session_2', function(request, response){
+  	console.log('Save user data for session 2');
+  	saveFile(dir, 'session_2.json', JSON.stringify(request.body));
+});
+
+app.post('/session_3', function(request, response){
+  	console.log('Save user data for session 3');
+  	saveFile(dir, 'session_3.json', JSON.stringify(request.body));
+});
+
+app.post('/session_4', function(request, response){
+  	console.log('Save user data for session 4');
+  	saveFile(dir, 'session_4.json', JSON.stringify(request.body));
 });
 
 app.listen(8080, function() {

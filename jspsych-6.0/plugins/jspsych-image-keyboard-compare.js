@@ -93,7 +93,8 @@ jsPsych.plugins["image-keyboard-compare"] = (function() {
     display_element.innerHTML = image_html;
 
     // position elements
-    var margin = (window.innerWidth - 612) / 2,
+    var image_dist = 20, image_res = 256;
+    var margin = (window.innerWidth - image_res * 2 - image_dist) / 2,
         top = window.innerHeight / 4; 
     var elm1 = display_element.querySelector('#jspsych-image-keyboard-compare-stimulus-1'),
         elm2 = display_element.querySelector('#jspsych-image-keyboard-compare-stimulus-2');
@@ -107,8 +108,8 @@ jsPsych.plugins["image-keyboard-compare"] = (function() {
 
     var textElm = display_element.querySelector('p');
     textElm.style.position = 'absolute';
-    textElm.style.left = margin + 256 / 4 + "px";
-    textElm.style.top = top + 256 + 20 + "px";
+    textElm.style.left = margin + image_res / 12 + "px";
+    textElm.style.top = top + image_res + 20 + "px";
 
     // store response
     var response = {
