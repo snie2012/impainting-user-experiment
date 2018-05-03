@@ -21,141 +21,176 @@
     var timeline = [];
 
     /* define welcome message trial */
-    var welcome = {
+    timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
       stimulus: "Welcome to the experiment. Press space to begin."
-    };
-    timeline.push(welcome);
+    });
 
     /* define instructions trial */
-    var instructions = {
+    timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "<p>In this experiment, three images of people will appear in the center " +
-          "of the screen.</p><p>Your task is to rank these images based on how <strong>real</strong> you think they are." + 
-          "<p>The ranking level is between 1 to 3, with <strong>1</strong> representing the most realistic one and <strong>3</strong> the least realistic one.</p>" +
-          "<p>There are totally 100 groups of images. The time to rank is not limited. </p> <p>When you finish one group, click the <strong>Continue</strong> button to continue to the next one.</p>" + 
-          "<p>At the end of the experiment, your name and age will be asked and recorded.</p>"
-    };
-    timeline.push(instructions);
+      stimulus: "<p>Compare image pairs. Pick the most realistic one.</p>"
+    });
 
     // session 1
-    var sess1_text = {
+    timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
       stimulus: "<p>This is session 1. Time unlimited. Press 'space' to continue.</p>"
-    };
-    timeline.push(sess1_text);
+    });
 
-    // for (var i = 0; i < imagelist.length; i++) {
-    for (var i = 0; i < 3; i++) {
-        var compare_trial = {
+    for (var i = 0; i < imagelist.length; i++) {
+        timeline.push({
           type: 'image-keyboard-compare',
-          stimulus_1: 'images/obama.png',
-          stimulus_2: 'images/penguin.png',
+          stimulus_1: 'images/ours_v1_19/' + imagelist[i] + '_fake.png',
+          stimulus_2: 'images/ctx_v1/' + imagelist[i] + '_ctx.png',
           placeholder_1: 'images/placeholder_1.png',
           placeholder_2: 'images/placeholder_2.png',
           choices: ['1', '2', ' '],
           prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
          response_ends_trial: false
-        }
-
-      timeline.push(compare_trial);
+        });
     }
 
     // session 2
-    var sess2_text = {
+    timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "<p>This is session 2. Time limited to 250 ms. Press 'space' to continue.</p>"
-    };
-    timeline.push(sess2_text);
+      stimulus: "<p>This is the fist part of session 2. Time limited to 250 ms. Press 'space' to continue.</p>"
+    });
 
-    // for (var i = 0; i < imagelist.length; i++) {
-    for (var i = 0; i < 3; i++) {
-        var compare_trial = {
+    for (var i = 0; i < imagelist.length; i++) {
+        timeline.push({
           type: 'image-keyboard-compare',
-          stimulus_1: 'images/obama.png',
-          stimulus_2: 'images/penguin.png',
+          stimulus_1: 'images/ours_v1_19/' + imagelist[i] + '_fake.png',
+          stimulus_2: 'images/groundtruth/' + imagelist[i] + '.png',
           placeholder_1: 'images/placeholder_1.png',
           placeholder_2: 'images/placeholder_2.png',
           choices: ['1', '2', ' '],
           prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
          response_ends_trial: false,
          stimulus_duration: 250
-        }
+        });
+    }
 
-      timeline.push(compare_trial);
+    timeline.push({
+      type: "html-keyboard-response",
+      choices: [' '],
+      stimulus: "<p>This is the second part of session 2. Time limited to 250 ms. Press 'space' to continue.</p>"
+    });
+
+    for (var i = 0; i < imagelist.length; i++) {
+        timeline.push({
+          type: 'image-keyboard-compare',
+          stimulus_1: 'images/ctx_v1/' + imagelist[i] + '_ctx.png',
+          stimulus_2: 'images/groundtruth/' + imagelist[i] + '.png',
+          placeholder_1: 'images/placeholder_1.png',
+          placeholder_2: 'images/placeholder_2.png',
+          choices: ['1', '2', ' '],
+          prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
+         response_ends_trial: false,
+         stimulus_duration: 250
+        });
     }
 
     // session 2
-    var sess3_text = {
+    timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "<p>This is session 3. Time limited to 1000 ms. Press 'space' to continue.</p>"
-    };
-    timeline.push(sess3_text);
+      stimulus: "<p>This is the first part of session 3. Time limited to 1000 ms. Press 'space' to continue.</p>"
+    });
 
-    // for (var i = 0; i < imagelist.length; i++) {
-    for (var i = 0; i < 3; i++) {
-        var compare_trial = {
+    for (var i = 0; i < imagelist.length; i++) {
+        timeline.push({
           type: 'image-keyboard-compare',
-          stimulus_1: 'images/obama.png',
-          stimulus_2: 'images/penguin.png',
+          stimulus_1: 'images/ours_v1_19/' + imagelist[i] + '_fake.png',
+          stimulus_2: 'images/groundtruth/' + imagelist[i] + '.png',
           placeholder_1: 'images/placeholder_1.png',
           placeholder_2: 'images/placeholder_2.png',
           choices: ['1', '2', ' '],
           prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
          response_ends_trial: false,
          stimulus_duration: 1000
-        }
+        });
+    }
 
-      timeline.push(compare_trial);
+    timeline.push({
+      type: "html-keyboard-response",
+      choices: [' '],
+      stimulus: "<p>This is the second part of session 3. Time limited to 1000 ms. Press 'space' to continue.</p>"
+    });
+
+    for (var i = 0; i < imagelist.length; i++) {
+        timeline.push({
+          type: 'image-keyboard-compare',
+          stimulus_1: 'images/ctx_v1/' + imagelist[i] + '_ctx.png',
+          stimulus_2: 'images/groundtruth/' + imagelist[i] + '.png',
+          placeholder_1: 'images/placeholder_1.png',
+          placeholder_2: 'images/placeholder_2.png',
+          choices: ['1', '2', ' '],
+          prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
+         response_ends_trial: false,
+         stimulus_duration: 1000
+        });
     }
 
     // session 4
-    var sess4_text = {
+    timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "<p>This is session 4. Time limited to 4000 ms. Press 'space' to continue.</p>"
-    };
-    timeline.push(sess4_text);
+      stimulus: "<p>This is the first part of session 4. Time limited to 4000 ms. Press 'space' to continue.</p>"
+    });
 
-    // for (var i = 0; i < imagelist.length; i++) {
-    for (var i = 0; i < 3; i++) {
-        var compare_trial = {
+    for (var i = 0; i < imagelist.length; i++) {
+        timeline.push({
           type: 'image-keyboard-compare',
-          stimulus_1: 'images/obama.png',
-          stimulus_2: 'images/penguin.png',
+          stimulus_1: 'images/ours_v1_19/' + imagelist[i] + '_fake.png',
+          stimulus_2: 'images/groundtruth/' + imagelist[i] + '.png',
           placeholder_1: 'images/placeholder_1.png',
           placeholder_2: 'images/placeholder_2.png',
           choices: ['1', '2', ' '],
           prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
          response_ends_trial: false,
          stimulus_duration: 4000
-        }
-
-      timeline.push(compare_trial);
+        });
     }
 
-    var survey_name = {
+    timeline.push({
+      type: "html-keyboard-response",
+      choices: [' '],
+      stimulus: "<p>This is the second part of session 4. Time limited to 4000 ms. Press 'space' to continue.</p>"
+    });
+
+    for (var i = 0; i < imagelist.length; i++) {
+        timeline.push({
+          type: 'image-keyboard-compare',
+          stimulus_1: 'images/ctx_v1/' + imagelist[i] + '_ctx.png',
+          stimulus_2: 'images/groundtruth/' + imagelist[i] + '.png',
+          placeholder_1: 'images/placeholder_1.png',
+          placeholder_2: 'images/placeholder_2.png',
+          choices: ['1', '2', ' '],
+          prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
+         response_ends_trial: false,
+         stimulus_duration: 4000
+        });
+    }
+
+    timeline.push({
       type: 'survey-text',
       questions: [{prompt: "What's your full name?"}]
-    };
-    timeline.push(survey_name);
+    });
 
-    var survey_age = {
+    timeline.push({
       type: 'survey-text',
       questions: [{prompt: "What is your age?"}]
-    };
-    timeline.push(survey_age);
+    });
 
-    var finish = {
+    timeline.push({
       type: 'html-keyboard-response',
-      stimulus: '<div style="font-size:15px;">You have reached the end of the experiment! Press any key to finish.</div>'
-    }
-    timeline.push(finish);
+      stimulus: '<div style="font-size:15px;">You have reached the end of the experiment! Please press "space" before exiting.</div>'
+    });
 
     /* start the experiment */
     jsPsych.init({

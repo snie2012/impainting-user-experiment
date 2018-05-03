@@ -78,16 +78,37 @@ jsPsych.plugins["image-keyboard-compare"] = (function() {
   }
 
   plugin.trial = function(display_element, trial) {
+    var randn = Math.floor(Math.random() * 2);
+    var first = randn == 0 ? trial.stimulus_1 : trial.stimulus_2, 
+        second = randn == 0 ? trial.stimulus_2 : trial.stimulus_1;
+    var image_html = '<img src="'+ first + '" id="jspsych-image-keyboard-compare-stimulus-1"></img>' + '<img src="'+ second + '" id="jspsych-image-keyboard-compare-stimulus-2"></img>';
 
-    var new_html = '<img src="'+ trial.stimulus_1 + '" id="jspsych-image-keyboard-compare-stimulus-1"></img>' + '<img src="'+ trial.stimulus_2 + '" id="jspsych-image-keyboard-compare-stimulus-2"></img>';;
 
     // add prompt
     if (trial.prompt !== null){
-      new_html += trial.prompt;
+      image_html += trial.prompt;
     }
 
     // draw
-    display_element.innerHTML = new_html;
+    display_element.innerHTML = image_html;
+
+    // position elements
+    var margin = (window.innerWidth - 612) / 2,
+        top = window.innerHeight / 4; 
+    var elm1 = display_element.querySelector('#jspsych-image-keyboard-compare-stimulus-1'),
+        elm2 = display_element.querySelector('#jspsych-image-keyboard-compare-stimulus-2');
+
+    elm1.style.position = 'absolute';
+    elm1.style.left = margin + "px";
+    elm1.style.top = top + "px";
+    elm2.style.position = 'absolute';
+    elm2.style.right = margin + "px";
+    elm2.style.top = top + "px";
+
+    var textElm = display_element.querySelector('p');
+    textElm.style.position = 'absolute';
+    textElm.style.left = margin + 256 / 4 + "px";
+    textElm.style.top = top + 256 + 20 + "px";
 
     // store response
     var response = {
@@ -108,8 +129,9 @@ jsPsych.plugins["image-keyboard-compare"] = (function() {
 
       // gather the data to store for the trial
       var trial_data = {
+        "first_image": first,
+        "second_image": second,
         "rt": response.rt,
-        "stimulus": trial.stimulus,
         "key_press": response.key
       };
 
@@ -131,11 +153,11 @@ jsPsych.plugins["image-keyboard-compare"] = (function() {
       // keycode 32: keyboard ' '
 
       if (info.key == 49) {
-        display_element.querySelector('#jspsych-image-keyboard-compare-stimulus-1').style.backgroundColor = 'lightgray';
-        display_element.querySelector('#jspsych-image-keyboard-compare-stimulus-2').style.backgroundColor = 'white';
+        elm1.style.borderBottom = 'solid red 5px';
+        elm2.style.borderBottom = '';
       } else if (info.key == 50) {
-        display_element.querySelector('#jspsych-image-keyboard-compare-stimulus-1').style.backgroundColor = 'white';
-        display_element.querySelector('#jspsych-image-keyboard-compare-stimulus-2').style.backgroundColor = 'lightgray';
+        elm1.style.borderBottom = '';
+        elm2.style.borderBottom = 'solid red 5px';
       }
 
       if (info.key == 49 || info.key == 50) {
@@ -162,10 +184,10 @@ jsPsych.plugins["image-keyboard-compare"] = (function() {
     // hide stimulus if stimulus_duration is set
     if (trial.stimulus_duration !== null) {
       jsPsych.pluginAPI.setTimeout(function() {
-        // display_element.querySelector('#jspsych-image-keyboard-compare-stimulus-1').style.visibility = 'hidden';
-        // display_element.querySelector('#jspsych-image-keyboard-compare-stimulus-2').style.visibility = 'hidden';
-        display_element.querySelector('#jspsych-image-keyboard-compare-stimulus-1').src = trial.placeholder_1;
-        display_element.querySelector('#jspsych-image-keyboard-compare-stimulus-2').src = trial.placeholder_2;
+        // elm1.style.visibility = 'hidden';
+        // elm2.style.visibility = 'hidden';
+        elm1.src = trial.placeholder_1;
+        elm2.src = trial.placeholder_2;
       }, trial.stimulus_duration);
     }
 

@@ -25,7 +25,6 @@ app.use(bodyParser.json());
 app.use('/jspsych-6.0', express.static(__dirname + '/jspsych-6.0'));
 app.use('/ours', express.static(__dirname + '/data/ours'));
 app.use('/ce', express.static(__dirname + '/data/ce'));
-app.use('/gl', express.static(__dirname + '/data/gl'));
 
 app.use('/images', express.static(__dirname + '/images'));
 
