@@ -97,7 +97,7 @@
       stimulus: "<p>This is training for session 1, you will see 15 image pairs. In this session, each image of every image pair is completed by two different algorithms. Your task is to select the most realistic one. The images are always visible and you have unlimited time to select. Press 'space' to continue.</p>"
     });
 
-    for (var i = 0; i < training_size; i++) {
+    for (var i = 0; i < training_images.length; i++) {
         timeline.push({
           type: 'image-keyboard-compare',
           stimulus_1: 'images/ours_v1_19/' + training_images[i] + '_fake.png',
@@ -133,7 +133,7 @@
       stimulus: "<p>This is training for session 3, you'll see 15 image pairs. In this session, one image in an image pair is completed by an algorithm and another one is a real image. Your task is to select the most realistic one. The images will hide after 1000 ms, but you still have unlimited time to select. Press 'space' to continue.</p>"
     });
 
-    for (var i = 0; i < training_size; i++) {
+    for (var i = 0; i < training_images.length; i++) {
         const randn = Math.floor(Math.random() * 2);
         timeline.push({
           type: 'image-keyboard-compare',
@@ -152,7 +152,7 @@
       stimulus: "<p>This is training for session 4, you'll see 15 image pairs. In this session, one image in an image pair is completed by an algorithm and another one is a real image. Your task is to select the most realistic one. The images will hide after 4000 ms, but you still have unlimited time to select. Press 'space' to continue.</p>"
     });
 
-    for (var i = 0; i < training_size; i++) {
+    for (var i = 0; i < training_images.length; i++) {
         const randn = Math.floor(Math.random() * 2);
         timeline.push({
           type: 'image-keyboard-compare',
@@ -194,7 +194,6 @@
       type: "html-keyboard-response",
       choices: [' '],
       stimulus: "<p>You have finished session 1! You can choose to take a break now. When you are back from the break, press 'space' to continue.</p>"
-      }
     });
 
     // prepare data for the following sessions
@@ -231,7 +230,6 @@
       type: "html-keyboard-response",
       choices: [' '],
       stimulus: "<p>You have finished 1/4 of session 2! You can choose to take a break now. When you are back from the break, press 'space' to continue.</p>"
-      }
     });
 
       for (var i = 50; i < 100; i++) {
@@ -250,7 +248,6 @@
       type: "html-keyboard-response",
       choices: [' '],
       stimulus: "<p>You have finished 2/4 of session 2! You can choose to take a break now. When you are back from the break, press 'space' to continue.</p>"
-      }
     });
 
     for (var i = 100; i < 150; i++) {
@@ -269,8 +266,7 @@
       type: "html-keyboard-response",
       choices: [' '],
       stimulus: "<p>You have finished 3/4 of session 2! You can choose to take a break now. When you are back from the break, press 'space' to continue.</p>"
-      }
-    });
+      });
 
 
     for (var i = 150; i < 200; i++) {
@@ -289,8 +285,7 @@
       type: "html-keyboard-response",
       choices: [' '],
       stimulus: "<p>You have finished session 2! You can choose to take a break now. When you are back from the break, press 'space' to continue.</p>"
-      }
-    });
+      });
 
 
     // session 3
@@ -320,8 +315,7 @@
       type: "html-keyboard-response",
       choices: [' '],
       stimulus: "<p>You have finished 1/2 of session 3! You can choose to take a break now. When you are back from the break, press 'space' to continue.</p>"
-      }
-    });
+      });
 
     for (var i = 100; i < 200; i++) {
         timeline.push({
@@ -339,8 +333,7 @@
       type: "html-keyboard-response",
       choices: [' '],
       stimulus: "<p>You have finished session 3! You can choose to take a break now. When you are back from the break, press 'space' to continue.</p>"
-      }
-    });
+      });
 
 
     // session 4
