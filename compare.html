@@ -88,16 +88,16 @@
     timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "<p>This is a training session. It consists of 4 sub-sessions. Press 'space' to continue.</p>"
+      stimulus: "<p>This is a training session. It consists of 4 sub-sessions. In each session, you will see 15 image pairs, one pair at a time. Your task is to select the most realistic image. Press '1' on the keyboard to select the first image and '2' for the second image. Once you finish selection, press 'space' to continue.</p>"
     });
 
     timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "<p>This is training for session 1. You will see 5 image pairs. Time is unlimited to select the most realistic image. Press 'space' to continue.</p>"
+      stimulus: "<p>This is training for session 1, you will see 15 image pairs. In this session, each image of every image pair is completed by two different algorithms. Your task is to select the most realistic one. The images are always visible and you have unlimited time to select. Press 'space' to continue.</p>"
     });
 
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < training_size; i++) {
         timeline.push({
           type: 'image-keyboard-compare',
           stimulus_1: 'images/ours_v1_19/' + training_images[i] + '_fake.png',
@@ -111,7 +111,7 @@
     timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "<p>This is training for session 2, you'll see 15 image pairs. Time is limited to 250 ms. After 250 ms, the images will be hidden, but you still have unlimited time to make a choice of the most realistic image. Press 'space' to continue.</p>"
+      stimulus: "<p>This is training for session 2, you'll see 15 image pairs. In this session, one image in an image pair is completed by an algorithm and another one is a real image. Your task is to select the most realistic one. The images will hide after 250 ms, but you still have unlimited time to select. Press 'space' to continue.</p>"
     });
 
     for (var i = 0; i < training_images.length; i++) {
@@ -130,10 +130,10 @@
     timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "<p>This is training for session 3. Time is limited to 1000 ms. After 1000 ms, the images will be hidden, but you still have unlimited time to make a choice of the most realistic image. Press 'space' to continue.</p>"
+      stimulus: "<p>This is training for session 3, you'll see 15 image pairs. In this session, one image in an image pair is completed by an algorithm and another one is a real image. Your task is to select the most realistic one. The images will hide after 1000 ms, but you still have unlimited time to select. Press 'space' to continue.</p>"
     });
 
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < training_size; i++) {
         const randn = Math.floor(Math.random() * 2);
         timeline.push({
           type: 'image-keyboard-compare',
@@ -149,10 +149,10 @@
     timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "<p>This is training for session 4. Time is limited to 4000 ms. After 4000 ms, the images will be hidden, but you still have unlimited time to make a choice of the most realistic image. Press 'space' to continue.</p>"
+      stimulus: "<p>This is training for session 4, you'll see 15 image pairs. In this session, one image in an image pair is completed by an algorithm and another one is a real image. Your task is to select the most realistic one. The images will hide after 4000 ms, but you still have unlimited time to select. Press 'space' to continue.</p>"
     });
 
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < training_size; i++) {
         const randn = Math.floor(Math.random() * 2);
         timeline.push({
           type: 'image-keyboard-compare',
@@ -176,7 +176,7 @@
     timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "<p>This is session 1. Time unlimited. Press 'space' to continue.</p>"
+      stimulus: "<p>This is session 1. In this session, you will see 100 image pairs. Each image of every image pair is completed by two different algorithms. Your task is to select the most realistic one. The images are always visible and you have unlimited time to select. Press 'space' to continue./p>"
     });
 
     for (var i = 0; i < imagelist1.length; i++) {
@@ -190,6 +190,13 @@
         });
     }
 
+    timeline.push({
+      type: "html-keyboard-response",
+      choices: [' '],
+      stimulus: "<p>You have finished session 1! You can choose to take a break now. When you are back from the break, press 'space' to continue.</p>"
+      }
+    });
+
     // prepare data for the following sessions
     let order_shuffle = [];
     for (let i = 0; i < imagelist2.length; i++) {
@@ -201,14 +208,14 @@
     timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "<p>This is session 2. Time limited to 250 ms. Press 'space' to continue.</p>",
+      stimulus: "<p>This is session 2. In this session, you will see 200 image pairs. One image in an image pair is completed by an algorithms and another one is a real image. Your task is to select the most realistic one. The images will hide after 250 ms, but you still have unlimited time to select. Press 'space' to continue.</p>",
       on_load: () => {
-        postData('/session_1', jsPsych.data.get().last(imagelist1.length).json());
+        postData('/session_1', jsPsych.data.get().last(imagelist1.length + 1).json());
       }
     });
 
     shuffle(order_shuffle);
-    for (var i = 0; i < order_shuffle.length; i++) {
+    for (var i = 0; i < 50; i++) {
         timeline.push({
           type: 'image-keyboard-compare',
           stimulus_1: 'images/' + (order_shuffle[i].indexOf('_fake') > -1 ? 'ours_v1_19/' : 'ctx_v1/') + order_shuffle[i],
@@ -220,19 +227,84 @@
         });
     }
 
+    timeline.push({
+      type: "html-keyboard-response",
+      choices: [' '],
+      stimulus: "<p>You have finished 1/4 of session 2! You can choose to take a break now. When you are back from the break, press 'space' to continue.</p>"
+      }
+    });
+
+      for (var i = 50; i < 100; i++) {
+        timeline.push({
+          type: 'image-keyboard-compare',
+          stimulus_1: 'images/' + (order_shuffle[i].indexOf('_fake') > -1 ? 'ours_v1_19/' : 'ctx_v1/') + order_shuffle[i],
+          stimulus_2: 'images/groundtruth/' + order_shuffle[i].split('_')[0] + '.png',
+          choices: ['1', '2', ' '],
+          prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
+          response_ends_trial: false,
+          stimulus_duration: 250
+        });
+    }
+
+    timeline.push({
+      type: "html-keyboard-response",
+      choices: [' '],
+      stimulus: "<p>You have finished 2/4 of session 2! You can choose to take a break now. When you are back from the break, press 'space' to continue.</p>"
+      }
+    });
+
+    for (var i = 100; i < 150; i++) {
+        timeline.push({
+          type: 'image-keyboard-compare',
+          stimulus_1: 'images/' + (order_shuffle[i].indexOf('_fake') > -1 ? 'ours_v1_19/' : 'ctx_v1/') + order_shuffle[i],
+          stimulus_2: 'images/groundtruth/' + order_shuffle[i].split('_')[0] + '.png',
+          choices: ['1', '2', ' '],
+          prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
+          response_ends_trial: false,
+          stimulus_duration: 250
+        });
+    }
+
+    timeline.push({
+      type: "html-keyboard-response",
+      choices: [' '],
+      stimulus: "<p>You have finished 3/4 of session 2! You can choose to take a break now. When you are back from the break, press 'space' to continue.</p>"
+      }
+    });
+
+
+    for (var i = 150; i < 200; i++) {
+        timeline.push({
+          type: 'image-keyboard-compare',
+          stimulus_1: 'images/' + (order_shuffle[i].indexOf('_fake') > -1 ? 'ours_v1_19/' : 'ctx_v1/') + order_shuffle[i],
+          stimulus_2: 'images/groundtruth/' + order_shuffle[i].split('_')[0] + '.png',
+          choices: ['1', '2', ' '],
+          prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
+          response_ends_trial: false,
+          stimulus_duration: 250
+        });
+    }
+
+    timeline.push({
+      type: "html-keyboard-response",
+      choices: [' '],
+      stimulus: "<p>You have finished session 2! You can choose to take a break now. When you are back from the break, press 'space' to continue.</p>"
+      }
+    });
+
 
     // session 3
     timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "<p>This is the session 3. Time limited to 1000 ms. Press 'space' to continue.</p>",
+      stimulus: "<p>This is the session 3. In this session, you will see 200 image pairs. One image in an image pair is completed by an algorithm and another one is a real image. Your task is to select the most realistic one. The images will hide after 1000 ms, but you still have unlimited time to select. Press 'space' to continue.</p>",
       on_load: () => {
-        postData('/session_2', jsPsych.data.get().last(order_shuffle.length).json());
+        postData('/session_2', jsPsych.data.get().last(order_shuffle.length + 4).json());
       }
     });
 
     shuffle(order_shuffle);
-    for (var i = 0; i < order_shuffle.length; i++) {
+    for (var i = 0; i < 100; i++) {
         timeline.push({
           type: 'image-keyboard-compare',
           stimulus_1: 'images/' + (order_shuffle[i].indexOf('_fake') > -1 ? 'ours_v1_19/' : 'ctx_v1/') + order_shuffle[i],
@@ -244,13 +316,40 @@
         });
     }
 
+    timeline.push({
+      type: "html-keyboard-response",
+      choices: [' '],
+      stimulus: "<p>You have finished 1/2 of session 3! You can choose to take a break now. When you are back from the break, press 'space' to continue.</p>"
+      }
+    });
+
+    for (var i = 100; i < 200; i++) {
+        timeline.push({
+          type: 'image-keyboard-compare',
+          stimulus_1: 'images/' + (order_shuffle[i].indexOf('_fake') > -1 ? 'ours_v1_19/' : 'ctx_v1/') + order_shuffle[i],
+          stimulus_2: 'images/groundtruth/' + order_shuffle[i].split('_')[0] + '.png',
+          choices: ['1', '2', ' '],
+          prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
+         response_ends_trial: false,
+         stimulus_duration: 1000
+        });
+    }
+
+    timeline.push({
+      type: "html-keyboard-response",
+      choices: [' '],
+      stimulus: "<p>You have finished session 3! You can choose to take a break now. When you are back from the break, press 'space' to continue.</p>"
+      }
+    });
+
+
     // session 4
     timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "<p>This is session 4. Time limited to 4000 ms. Press 'space' to continue.</p>",
+      stimulus: "<p>This is session 4. In this session, you will see 200 image pairs. One image in an image pair is completed by an algorithm and another one is a real image. Your task is to select the most realistic one. The images will hide after 4000 ms, but you still have unlimited time to select. Press 'space' to continue.</p>",
       on_load: () => {
-        postData('/session_3', jsPsych.data.get().last(order_shuffle.length).json(order_shuffle));
+        postData('/session_3', jsPsych.data.get().last(order_shuffle.length + 2).json(order_shuffle));
       }
     });
 
@@ -269,7 +368,7 @@
 
     timeline.push({
       type: 'html-keyboard-response',
-      stimulus: '<div style="font-size:15px;">You have reached the end of the experiment! Please press "space" before exiting.</div>',
+      stimulus: '<div style="font-size:15px;">You have finished session 4 and reached the end of the experiment! Please press "space" before exiting.</div>',
       on_load: () => {
         postData('/session_4', jsPsych.data.get().last(order_shuffle.length).json());
       }
