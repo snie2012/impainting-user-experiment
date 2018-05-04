@@ -55,52 +55,46 @@
     timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "Welcome to the experiment. Press space to begin."
+      stimulus: "Welcome to the experiment. In this experiment, you will be presented with a pair of images each time. Your task is to pick the most realistic image. We will first ask some basic information: name, age and gender. Then you will go through a training session. After that, the formal experiment will be conducted. Press space to begin."
     });
 
     timeline.push({
-      type: "html-keyboard-response",
-      choices: [' '],
-      stimulus: "<p>Compare image pairs. Pick the most realistic one.</p>"
+      type: 'survey-text',
+      questions: [{prompt: "What's your full name?"}],
+      on_finish: data => {
+        user_name = JSON.parse(data.responses)['Q0'];
+        postData('/user_name', JSON.stringify(data));
+      }
     });
 
-    // timeline.push({
-    //   type: 'survey-text',
-    //   questions: [{prompt: "What's your full name?"}],
-    //   on_finish: data => {
-    //     user_name = JSON.parse(data.responses)['Q0'];
-    //     postData('/user_name', JSON.stringify(data));
-    //   }
-    // });
+    timeline.push({
+      type: 'survey-text',
+      questions: [{prompt: "What is your age?"}],
+      on_finish: data => {
+        postData('/user_age', JSON.stringify(data));
+      }
+    });
 
-    // timeline.push({
-    //   type: 'survey-text',
-    //   questions: [{prompt: "What is your age?"}],
-    //   on_finish: data => {
-    //     postData('/user_age', JSON.stringify(data));
-    //   }
-    // });
-
-    // timeline.push({
-    //   type: 'survey-text',
-    //   questions: [{prompt: "What is your gender ('F' for female and 'M' for male)?"}],
-    //   on_finish: data => {
-    //     postData('/user_gender', JSON.stringify(data));
-    //   }
-    // });
+    timeline.push({
+      type: 'survey-text',
+      questions: [{prompt: "What is your gender ('F' for female and 'M' for male)?"}],
+      on_finish: data => {
+        postData('/user_gender', JSON.stringify(data));
+      }
+    });
 
 
     // training session
     timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "<p>This is a training session. Press 'space' to continue.</p>"
+      stimulus: "<p>This is a training session. It consists of 4 sub-sessions. Press 'space' to continue.</p>"
     });
 
     timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "<p>This is training for session 1. Time unlimited. Press 'space' to continue.</p>"
+      stimulus: "<p>This is training for session 1. You will see 5 image pairs. Time is unlimited to select the most realistic image. Press 'space' to continue.</p>"
     });
 
     for (var i = 0; i < 5; i++) {
@@ -117,7 +111,7 @@
     timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "<p>This is training for session 2. Time limited to 250 ms. Press 'space' to continue.</p>"
+      stimulus: "<p>This is training for session 2, you'll see 15 image pairs. Time is limited to 250 ms. After 250 ms, the images will be hidden, but you still have unlimited time to make a choice of the most realistic image. Press 'space' to continue.</p>"
     });
 
     for (var i = 0; i < training_images.length; i++) {
@@ -136,7 +130,7 @@
     timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "<p>This is training for session 3. Time limited to 1000 ms. Press 'space' to continue.</p>"
+      stimulus: "<p>This is training for session 3. Time is limited to 1000 ms. After 1000 ms, the images will be hidden, but you still have unlimited time to make a choice of the most realistic image. Press 'space' to continue.</p>"
     });
 
     for (var i = 0; i < 5; i++) {
@@ -155,7 +149,7 @@
     timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: "<p>This is training for session 4. Time limited to 4000 ms. Press 'space' to continue.</p>"
+      stimulus: "<p>This is training for session 4. Time is limited to 4000 ms. After 4000 ms, the images will be hidden, but you still have unlimited time to make a choice of the most realistic image. Press 'space' to continue.</p>"
     });
 
     for (var i = 0; i < 5; i++) {
@@ -170,6 +164,12 @@
           stimulus_duration: 4000
         });
     }
+
+    timeline.push({
+      type: "html-keyboard-response",
+      choices: [' '],
+      stimulus: "<p>Training session finished! Now you are heading to the formal user experiment. As in the training, there will be 4 sessions in total. You will see 100 image pairs in the first session and 200 images pairs in all the other sessions. Press 'space' to continue.</p>"
+    });
 
 
     // session 1
