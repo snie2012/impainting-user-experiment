@@ -43,6 +43,11 @@
     xhr2.send();
     const imagelist2 = JSON.parse(xhr2.responseText);
 
+    var xhr3 = new XMLHttpRequest();
+    xhr3.open("GET", '/training_images', false);
+    xhr3.send();
+    const training_images = JSON.parse(xhr3.responseText);    
+
     /* create timeline */
     var timeline = [];
 
@@ -59,30 +64,113 @@
       stimulus: "<p>Compare image pairs. Pick the most realistic one.</p>"
     });
 
+    // timeline.push({
+    //   type: 'survey-text',
+    //   questions: [{prompt: "What's your full name?"}],
+    //   on_finish: data => {
+    //     user_name = JSON.parse(data.responses)['Q0'];
+    //     postData('/user_name', JSON.stringify(data));
+    //   }
+    // });
+
+    // timeline.push({
+    //   type: 'survey-text',
+    //   questions: [{prompt: "What is your age?"}],
+    //   on_finish: data => {
+    //     postData('/user_age', JSON.stringify(data));
+    //   }
+    // });
+
+    // timeline.push({
+    //   type: 'survey-text',
+    //   questions: [{prompt: "What is your gender ('F' for female and 'M' for male)?"}],
+    //   on_finish: data => {
+    //     postData('/user_gender', JSON.stringify(data));
+    //   }
+    // });
+
+
+    // training session
     timeline.push({
-      type: 'survey-text',
-      questions: [{prompt: "What's your full name?"}],
-      on_finish: data => {
-        user_name = JSON.parse(data.responses)['Q0'];
-        postData('/user_name', JSON.stringify(data));
-      }
+      type: "html-keyboard-response",
+      choices: [' '],
+      stimulus: "<p>This is a training session. Press 'space' to continue.</p>"
     });
 
     timeline.push({
-      type: 'survey-text',
-      questions: [{prompt: "What is your age?"}],
-      on_finish: data => {
-        postData('/user_age', JSON.stringify(data));
-      }
+      type: "html-keyboard-response",
+      choices: [' '],
+      stimulus: "<p>This is training for session 1. Time unlimited. Press 'space' to continue.</p>"
     });
 
+    for (var i = 0; i < 5; i++) {
+        timeline.push({
+          type: 'image-keyboard-compare',
+          stimulus_1: 'images/ours_v1_19/' + training_images[i] + '_fake.png',
+          stimulus_2: 'images/ctx_v1/' + training_images[i] + '_ctx.png',
+          choices: ['1', '2', ' '],
+          prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
+         response_ends_trial: false
+        });
+    }
+
     timeline.push({
-      type: 'survey-text',
-      questions: [{prompt: "What is your gender ('F' for female and 'M' for male)?"}],
-      on_finish: data => {
-        postData('/user_gender', JSON.stringify(data));
-      }
+      type: "html-keyboard-response",
+      choices: [' '],
+      stimulus: "<p>This is training for session 2. Time limited to 250 ms. Press 'space' to continue.</p>"
     });
+
+    for (var i = 0; i < training_images.length; i++) {
+        const randn = Math.floor(Math.random() * 2);
+        timeline.push({
+          type: 'image-keyboard-compare',
+          stimulus_1: 'images/' + (randn == 0 ? 'ours_v1_19/' : 'ctx_v1/') + training_images[i] + (randn == 0 ? '_fake.png' : '_ctx.png'),
+          stimulus_2: 'images/groundtruth/' + training_images[i] + '.png',
+          choices: ['1', '2', ' '],
+          prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
+          response_ends_trial: false,
+          stimulus_duration: 250
+        });
+    }
+
+    timeline.push({
+      type: "html-keyboard-response",
+      choices: [' '],
+      stimulus: "<p>This is training for session 3. Time limited to 1000 ms. Press 'space' to continue.</p>"
+    });
+
+    for (var i = 0; i < 5; i++) {
+        const randn = Math.floor(Math.random() * 2);
+        timeline.push({
+          type: 'image-keyboard-compare',
+          stimulus_1: 'images/' + (randn == 0 ? 'ours_v1_19/' : 'ctx_v1/') + training_images[i] + (randn == 0 ? '_fake.png' : '_ctx.png'),
+          stimulus_2: 'images/groundtruth/' + training_images[i] + '.png',
+          choices: ['1', '2', ' '],
+          prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
+          response_ends_trial: false,
+          stimulus_duration: 1000
+        });
+    }
+
+    timeline.push({
+      type: "html-keyboard-response",
+      choices: [' '],
+      stimulus: "<p>This is training for session 4. Time limited to 4000 ms. Press 'space' to continue.</p>"
+    });
+
+    for (var i = 0; i < 5; i++) {
+        const randn = Math.floor(Math.random() * 2);
+        timeline.push({
+          type: 'image-keyboard-compare',
+          stimulus_1: 'images/' + (randn == 0 ? 'ours_v1_19/' : 'ctx_v1/') + training_images[i] + (randn == 0 ? '_fake.png' : '_ctx.png'),
+          stimulus_2: 'images/groundtruth/' + training_images[i] + '.png',
+          choices: ['1', '2', ' '],
+          prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
+          response_ends_trial: false,
+          stimulus_duration: 4000
+        });
+    }
+
 
     // session 1
     timeline.push({
@@ -91,18 +179,16 @@
       stimulus: "<p>This is session 1. Time unlimited. Press 'space' to continue.</p>"
     });
 
-    // for (var i = 0; i < imagelist1.length; i++) {
-    //     timeline.push({
-    //       type: 'image-keyboard-compare',
-    //       stimulus_1: 'images/ours_v1_19/' + imagelist1[i] + '_fake.png',
-    //       stimulus_2: 'images/ctx_v1/' + imagelist1[i] + '_ctx.png',
-    //       placeholder_1: 'images/placeholder_1.png',
-    //       placeholder_2: 'images/placeholder_2.png',
-    //       choices: ['1', '2', ' '],
-    //       prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
-    //      response_ends_trial: false
-    //     });
-    // }
+    for (var i = 0; i < imagelist1.length; i++) {
+        timeline.push({
+          type: 'image-keyboard-compare',
+          stimulus_1: 'images/ours_v1_19/' + imagelist1[i] + '_fake.png',
+          stimulus_2: 'images/ctx_v1/' + imagelist1[i] + '_ctx.png',
+          choices: ['1', '2', ' '],
+          prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
+         response_ends_trial: false
+        });
+    }
 
     // prepare data for the following sessions
     let order_shuffle = [];
@@ -127,8 +213,6 @@
           type: 'image-keyboard-compare',
           stimulus_1: 'images/' + (order_shuffle[i].indexOf('_fake') > -1 ? 'ours_v1_19/' : 'ctx_v1/') + order_shuffle[i],
           stimulus_2: 'images/groundtruth/' + order_shuffle[i].split('_')[0] + '.png',
-          placeholder_1: 'images/placeholder_1.png',
-          placeholder_2: 'images/placeholder_2.png',
           choices: ['1', '2', ' '],
           prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
           response_ends_trial: false,
@@ -153,8 +237,6 @@
           type: 'image-keyboard-compare',
           stimulus_1: 'images/' + (order_shuffle[i].indexOf('_fake') > -1 ? 'ours_v1_19/' : 'ctx_v1/') + order_shuffle[i],
           stimulus_2: 'images/groundtruth/' + order_shuffle[i].split('_')[0] + '.png',
-          placeholder_1: 'images/placeholder_1.png',
-          placeholder_2: 'images/placeholder_2.png',
           choices: ['1', '2', ' '],
           prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
          response_ends_trial: false,
@@ -178,8 +260,6 @@
           type: 'image-keyboard-compare',
           stimulus_1: 'images/' + (order_shuffle[i].indexOf('_fake') > -1 ? 'ours_v1_19/' : 'ctx_v1/') + order_shuffle[i],
           stimulus_2: 'images/groundtruth/' + order_shuffle[i].split('_')[0] + '.png',
-          placeholder_1: 'images/placeholder_1.png',
-          placeholder_2: 'images/placeholder_2.png',
           choices: ['1', '2', ' '],
           prompt: "<p>Press '1' to choose the first image and '2' for the second image.</p>",
          response_ends_trial: false,
@@ -204,6 +284,12 @@
     }
 
     for (var im of imagelist2) {
+      preloadImages.push('images/groundtruth/' + im + '.png');
+      preloadImages.push('images/ctx_v1/' + im + '_ctx.png');
+      preloadImages.push('images/ours_v1_19/' + im + '_fake.png');
+    }
+
+    for (var im of training_images) {
       preloadImages.push('images/groundtruth/' + im + '.png');
       preloadImages.push('images/ctx_v1/' + im + '_ctx.png');
       preloadImages.push('images/ours_v1_19/' + im + '_fake.png');
