@@ -57,7 +57,12 @@
     /* create timeline */
     var timeline = [];
 
-    /* define welcome message trial */
+    timeline.push({
+      type: "html-keyboard-response",
+      choices: [' '],
+      stimulus: '<embed src="https://drive.google.com/viewerng/viewer?embedded=true&url=http://example.com/the.pdf" width="500" height="375">'
+    });
+
     timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
