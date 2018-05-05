@@ -13,7 +13,8 @@ jsPsych.plugins["image-keyboard-compare"] = (function() {
 
   var plugin = {};
 
-  jsPsych.pluginAPI.registerPreload('image-keyboard-compare', 'stimulus', 'image');
+  jsPsych.pluginAPI.registerPreload('image-keyboard-compare', 'stimulus_1', 'image');
+  jsPsych.pluginAPI.registerPreload('image-keyboard-compare', 'stimulus_2', 'image');
 
   plugin.info = {
     name: 'image-keyboard-compare',

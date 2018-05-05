@@ -5,7 +5,7 @@
         <script src="jspsych-6.0/jspsych.js"></script>
         <script src="jspsych-6.0/plugins/jspsych-html-keyboard-response.js"></script>
         <script src="jspsych-6.0/plugins/jspsych-image-keyboard-compare.js"></script>
-        <script src="jspsych-6.0/plugins/jspsych-image-rank.js"></script>
+        <script src="jspsych-6.0/plugins/jspsych-html-timer.js"></script>
         <script src="jspsych-6.0/plugins/jspsych-survey-text.js"></script>
         <link href="jspsych-6.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
     </head>
@@ -60,13 +60,7 @@
     timeline.push({
       type: "html-keyboard-response",
       choices: [' '],
-      stimulus: '<embed src="https://drive.google.com/viewerng/viewer?embedded=true&url=http://example.com/the.pdf" width="500" height="375">'
-    });
-
-    timeline.push({
-      type: "html-keyboard-response",
-      choices: [' '],
-      stimulus: "Welcome to the experiment. In this experiment, you will be presented with a pair of images each time. Your task is to pick the most realistic image. We will first ask some basic information: name, age and gender. Then you will go through a training session. After that, the formal experiment will be conducted. Press space to begin."
+      stimulus: '<p>Welcome to the experiment. Below is a brief introduction to our research and the experiment. It gives you a general idea of the experiment. After reading it, press "space" to continue to the next page (you might need to click on the blank space outside of the instruction area to make the "space" effective). </p><iframe src="https://drive.google.com/file/d/19pOUXtJrTgjcqOAwBzvDiX0T8zt6vjxd/preview" width="800" height="580"></iframe>'
     });
 
     timeline.push({
@@ -373,37 +367,38 @@
     }
 
     timeline.push({
-      type: 'html-keyboard-response',
-      stimulus: '<div style="font-size:15px;">You have finished session 4 and reached the end of the experiment! Please press "space" before exiting.</div>',
+      type: 'html-timer',
+      total_time: 180,
+      message: "You have reached the end of the experiment. Please keep this page open for a while to allow the data to reach the server. Once the clock above counts to 0, you can close the page. Thank you for participating.",
       on_load: () => {
         postData('/session_4', jsPsych.data.get().last(order_shuffle.length).addToAll({"user_name": user_name}).json());
       }
     });
 
     /* start the experiment */
-    let preloadImages = [];
-    for (var im of imagelist1) {
-      preloadImages.push('images/groundtruth/' + im + '.png');
-      preloadImages.push('images/ctx_v1/' + im + '_ctx.png');
-      preloadImages.push('images/ours_v1_19/' + im + '_fake.png');
-    }
+    // let preloadImages = [];
+    // for (var im of imagelist1) {
+    //   preloadImages.push('images/groundtruth/' + im + '.png');
+    //   preloadImages.push('images/ctx_v1/' + im + '_ctx.png');
+    //   preloadImages.push('images/ours_v1_19/' + im + '_fake.png');
+    // }
 
-    for (var im of imagelist2) {
-      preloadImages.push('images/groundtruth/' + im + '.png');
-      preloadImages.push('images/ctx_v1/' + im + '_ctx.png');
-      preloadImages.push('images/ours_v1_19/' + im + '_fake.png');
-    }
+    // for (var im of imagelist2) {
+    //   preloadImages.push('images/groundtruth/' + im + '.png');
+    //   preloadImages.push('images/ctx_v1/' + im + '_ctx.png');
+    //   preloadImages.push('images/ours_v1_19/' + im + '_fake.png');
+    // }
 
-    for (var im of training_images) {
-      preloadImages.push('images/groundtruth/' + im + '.png');
-      preloadImages.push('images/ctx_v1/' + im + '_ctx.png');
-      preloadImages.push('images/ours_v1_19/' + im + '_fake.png');
-    }
+    // for (var im of training_images) {
+    //   preloadImages.push('images/groundtruth/' + im + '.png');
+    //   preloadImages.push('images/ctx_v1/' + im + '_ctx.png');
+    //   preloadImages.push('images/ours_v1_19/' + im + '_fake.png');
+    // }
 
     jsPsych.init({
       timeline: timeline,
       show_progress_bar: true,
-      preload_images: preloadImages,
+      // preload_images: preloadImages,
       show_preload_progress_bar: true
     });
   </script>
