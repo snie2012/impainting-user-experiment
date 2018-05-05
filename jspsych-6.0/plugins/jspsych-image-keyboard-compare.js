@@ -173,7 +173,6 @@ jsPsych.plugins["image-keyboard-compare"] = (function() {
       }
 
       if (response.key && info.key == 32) {
-        console.log(response);
         end_trial();
       }
     };
